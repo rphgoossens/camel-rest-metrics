@@ -1,6 +1,7 @@
 package nl.terrax.camel.controller;
 
 import nl.terrax.camel.model.Beer;
+import nl.terrax.camel.processor.BeerOrderProcessor;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
@@ -16,6 +17,12 @@ import static org.apache.camel.LoggingLevel.INFO;
 @Component
 class RestApi extends RouteBuilder {
 
+    private final BeerOrderProcessor beerOrderProcessor;
+
+    RestApi(BeerOrderProcessor beerOrderProcessor) {
+        this.beerOrderProcessor = beerOrderProcessor;
+    }
+
     @Value("${server.port}")
     String serverPort;
 
@@ -30,7 +37,7 @@ class RestApi extends RouteBuilder {
                 .port(serverPort)
                 .enableCORS(true)
                 .apiContextPath("/v2/api-docs")
-                .apiProperty("api.title", "Test REST API")
+                .apiProperty("api.title", "Beer API with metrics")
                 .apiProperty("api.version", "v1")
                 .apiProperty("cors", "true") // cross-site
                 .apiContextRouteId("doc-api")
@@ -38,7 +45,7 @@ class RestApi extends RouteBuilder {
                 .bindingMode(RestBindingMode.json)
                 .dataFormatProperty("prettyPrint", "true");
 
-        rest("/api/").description("Teste REST Service")
+        rest("/api/").description("Beer Service")
                 .id("api-route")
                 .post("/beer")
                 .produces(MediaType.APPLICATION_JSON)
@@ -50,7 +57,7 @@ class RestApi extends RouteBuilder {
 
         from("direct:remoteService")
                 .routeId("direct-route")
-                .process(e -> System.out.println())
+                .process(beerOrderProcessor)
                 .log(INFO, "Beer ${body.name} of type ${body.type} posted")
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(201));
     }
