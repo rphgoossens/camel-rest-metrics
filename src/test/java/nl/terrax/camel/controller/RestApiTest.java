@@ -51,23 +51,4 @@ public class RestApiTest {
         assertEquals(2.0, meterRegistry.get("beer.orders").tag("type", "ale").counter().count());
     }
 
-    @Test
-    @DirtiesContext
-    void whenPostDifferentBeerTypesExpectCorrectMetrics2() throws InterruptedException {
-        // given
-        mockPostBeer.expectedMessageCount(5);
-
-        // when
-        producerTemplate.sendBody("direct:remote-service", lager);
-        producerTemplate.sendBody("direct:remote-service", lager);
-        producerTemplate.sendBody("direct:remote-service", ale);
-        producerTemplate.sendBody("direct:remote-service", lager);
-        producerTemplate.sendBody("direct:remote-service", ale);
-
-        // then
-        mockPostBeer.assertIsSatisfied();
-        assertEquals(3.0, meterRegistry.get("beer.orders").tag("type", "lager").counter().count());
-        assertEquals(2.0, meterRegistry.get("beer.orders").tag("type", "ale").counter().count());
-    }
-
 }
