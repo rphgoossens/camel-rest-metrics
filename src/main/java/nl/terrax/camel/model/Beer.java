@@ -5,6 +5,10 @@ public class Beer {
     private String name;
     private BeerType type;
 
+    public Beer(String name, BeerType type) {
+        this.name = name;
+        this.type = type;
+    }
 
     public String getName() {
         return name;

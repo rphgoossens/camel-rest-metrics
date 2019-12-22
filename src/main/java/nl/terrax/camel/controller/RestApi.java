@@ -31,7 +31,7 @@ class RestApi extends RouteBuilder {
 
     @Override
     public void configure() {
-        CamelContext context = new DefaultCamelContext();
+
         // http://localhost:8080/camel/v2/api-docs
         restConfiguration().contextPath(contextPath) //
                 .port(serverPort)
@@ -53,12 +53,13 @@ class RestApi extends RouteBuilder {
                 .bindingMode(RestBindingMode.auto)
                 .type(Beer.class)
                 .enableCORS(true)
-                .to("direct:remoteService");
+                .to("direct:remote-service");
 
-        from("direct:remoteService")
+        from("direct:remote-service")
                 .routeId("direct-route")
                 .process(beerOrderProcessor)
                 .log(INFO, "Beer ${body.name} of type ${body.type} posted")
-                .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(201));
+                .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(201))
+                .to("mock:post-beer");
     }
 }
