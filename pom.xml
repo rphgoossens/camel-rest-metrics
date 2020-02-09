@@ -11,14 +11,14 @@
 
     <groupId>nl.terrax</groupId>
     <artifactId>camel-rest-metrics</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
 
     <name>camel-rest-metrics-demo</name>
     <description>Demo project for Camel REST Spring Boot app using metrics</description>
 
     <scm>
         <developerConnection>scm:git:git@github.com:rphgoossens/camel-rest-metrics.git</developerConnection>
-        <tag>camel-rest-metrics-1.0.0</tag>
+        <tag>camel-rest-metrics-1.0.1</tag>
     </scm>
 
     <distributionManagement>
