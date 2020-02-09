@@ -8,7 +8,18 @@ camel:
       version: v1
 
 hawtio:
-  authenticationEnabled: false
+  realm: hawtio
+  rolePrincipalClasses: org.eclipse.jetty.jaas.JAASRole
+  roles: admin
+
+logging.level:
+  io:
+    hawt: INFO
+    undertow: WARN
+  org:
+    eclipse:
+      jetty: WARN
+    springframework: WARN
 
 management:
   endpoints:
@@ -24,6 +35,10 @@ management:
 
 server:
   port: 8080
+
+spring:
+  jmx:
+    enabled: true
 
 springfox:
   documentation:
