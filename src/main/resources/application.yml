@@ -1,0 +1,32 @@
+camel:
+  rest:
+    context-path: /camel
+    enable-cors: true
+    api-context-path: /v2/api-docs
+    api-property.api:
+      title: Beer API with metrics
+      version: v1
+
+hawtio:
+  authenticationEnabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hawtio,jolokia,metrics
+  metrics:
+    enable:
+      root: false
+      jvm: true
+  server:
+    port: 8912
+
+server:
+  port: 8080
+
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /camel/v2/api-docs
