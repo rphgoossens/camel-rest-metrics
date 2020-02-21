@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType;
 import static org.apache.camel.LoggingLevel.INFO;
 
 @Component
-class RestApi extends RouteBuilder {
+public class RestApi extends RouteBuilder {
 
     private final BeerOrderProcessor beerOrderProcessor;
 

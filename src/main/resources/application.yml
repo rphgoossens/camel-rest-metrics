@@ -1,4 +1,7 @@
 camel:
+  component:
+    jms:
+      connection-factory: cachingConnectionFactory
   rest:
     context-path: /camel
     enable-cors: true
@@ -39,6 +42,8 @@ server:
 spring:
   jmx:
     enabled: true
+  profiles:
+    active: development
 
 springfox:
   documentation:

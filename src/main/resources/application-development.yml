@@ -1,0 +1,4 @@
+artemis:
+  password: admin
+  user: admin
+  broker-url: tcp://localhost:61616
