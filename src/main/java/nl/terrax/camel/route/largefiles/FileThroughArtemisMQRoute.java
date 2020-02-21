@@ -1,20 +1,22 @@
-package nl.terrax.camel.route;
+package nl.terrax.camel.route.largefiles;
 
 import org.apache.camel.builder.RouteBuilder;
+import org.springframework.stereotype.Component;
 
 import static org.apache.camel.LoggingLevel.INFO;
 
+@Component
 public class FileThroughArtemisMQRoute extends RouteBuilder {
 
     @Override
-    public void configure() throws Exception {
+    public void configure() {
         from("file:/home/rphgoossens/inbox")
-                .log(INFO, "file opgepikt")
+                .log(INFO, "Picked up file")
                 .inOnly("jms:queue:file-queue");
 
         from("jms:queue:file-queue")
                 .streamCaching()
-                .log(INFO, "amq message opgepikt")
+                .log(INFO, "Dropped off file")
                 .to("file:/home/rphgoossens/outbox");
 
     }

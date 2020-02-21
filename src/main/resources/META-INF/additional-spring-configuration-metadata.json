@@ -1,0 +1,39 @@
+{
+  "properties": [
+    {
+      "name": "springfox.documentation.swagger.v2.path",
+      "type": "java.lang.String",
+      "description": "Description for springfox.documentation.swagger.v2.path."
+    },
+    {
+      "name": "hawtio.realm",
+      "type": "java.lang.String",
+      "description": "Description for hawtio.realm."
+    },
+    {
+      "name": "hawtio.rolePrincipalClasses",
+      "type": "java.lang.String",
+      "description": "Description for hawtio.rolePrincipalClasses."
+    },
+    {
+      "name": "hawtio.roles",
+      "type": "java.lang.String",
+      "description": "Description for hawtio.roles."
+    },
+    {
+      "name": "artemis.password",
+      "type": "java.lang.String",
+      "description": "Description for artemis.password."
+    },
+    {
+      "name": "artemis.user",
+      "type": "java.lang.String",
+      "description": "Description for artemis.user."
+    },
+    {
+      "name": "artemis.broker-url",
+      "type": "java.lang.String",
+      "description": "Description for artemis.broker-url."
+    }
+  ]
+}
