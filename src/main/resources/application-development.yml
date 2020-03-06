@@ -2,3 +2,9 @@ artemis:
   password: admin
   user: admin
   broker-url: tcp://localhost:61616
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/hazelcast
+    username: hc_admin
+    password: password

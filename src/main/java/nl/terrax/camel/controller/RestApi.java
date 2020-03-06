@@ -1,7 +1,8 @@
 package nl.terrax.camel.controller;
 
 import nl.terrax.camel.model.Beer;
-import nl.terrax.camel.processor.BeerOrderProcessor;
+import nl.terrax.camel.model.BeerSummary;
+import nl.terrax.camel.processor.BeerOrderService;
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
@@ -14,10 +15,10 @@ import static org.apache.camel.LoggingLevel.INFO;
 @Component
 public class RestApi extends RouteBuilder {
 
-    private final BeerOrderProcessor beerOrderProcessor;
+    private final BeerOrderService beerOrderService;
 
-    RestApi(BeerOrderProcessor beerOrderProcessor) {
-        this.beerOrderProcessor = beerOrderProcessor;
+    RestApi(BeerOrderService beerOrderService) {
+        this.beerOrderService = beerOrderService;
     }
 
     @Override
@@ -25,17 +26,30 @@ public class RestApi extends RouteBuilder {
 
         rest("/api/").description("Beer Service")
                 .id("api-route")
-                .post("/beer")
+                .get("beer/{name}")
                 .produces(MediaType.APPLICATION_JSON)
+                .bindingMode(RestBindingMode.auto)
+                .outType(BeerSummary.class)
+                .to("direct:get-beer")
+                .post("/beer")
                 .consumes(MediaType.APPLICATION_JSON)
+                .produces(MediaType.APPLICATION_JSON)
                 .bindingMode(RestBindingMode.auto)
                 .type(Beer.class)
-                .enableCORS(true)
-                .to("direct:remote-service");
+//                .enableCORS(true)
+                .to("direct:post-beer");
 
-        from("direct:remote-service")
-                .routeId("direct-route")
-                .process(beerOrderProcessor)
+        from("direct:get-beer")
+                .routeId("get-route")
+                .log(INFO, "Beer ${header.name} requested")
+                .bean(beerOrderService, "getBeer")
+                .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200))
+                .to("mock:get-beer");
+
+
+        from("direct:post-beer")
+                .routeId("post-route")
+                .bean(beerOrderService, "postBeer")
                 .log(INFO, "Beer ${body.name} of type ${body.type} posted")
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(201))
                 .to("mock:post-beer");
