@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 public class HazelcastConfiguration {
 
     @Bean
-    public Config hazelCastConfig(BeerMapStore beerMapStore) {
+    public Config hazelCastConfig(BeerMapFileStore beerMapFileStore) {
         return new Config()
                 .setInstanceName("hazelcast-instance")
                 .addMapConfig(new MapConfig()
@@ -18,7 +18,9 @@ public class HazelcastConfiguration {
                         .setMaxSizeConfig(new MaxSizeConfig(200, MaxSizeConfig.MaxSizePolicy.FREE_HEAP_SIZE))
                         .setEvictionPolicy(EvictionPolicy.LRU)
                         .setMapStoreConfig(new MapStoreConfig()
-                                .setImplementation(beerMapStore))
+                                .setEnabled(true)
+                                .setImplementation(beerMapFileStore)
+                                .setWriteDelaySeconds(10))
                         .setTimeToLiveSeconds(0));
     }
 

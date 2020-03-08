@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class BeerMapStore implements MapStore<String, Integer> {
+public class BeerMapDBStore implements MapStore<String, Integer> {
 
     public static final String CREATE_TABLE_STMT =
             "create table if not exists beer_summary" +
@@ -22,7 +22,7 @@ public class BeerMapStore implements MapStore<String, Integer> {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public BeerMapStore(JdbcTemplate jdbcTemplate) {
+    public BeerMapDBStore(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
 
         jdbcTemplate.execute(CREATE_TABLE_STMT);

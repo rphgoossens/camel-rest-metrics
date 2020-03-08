@@ -34,6 +34,11 @@
       "name": "artemis.broker-url",
       "type": "java.lang.String",
       "description": "Description for artemis.broker-url."
+    },
+    {
+      "name": "hazelcast.filestore.directory",
+      "type": "java.lang.String",
+      "description": "Description for hazelcast.filestore.directory."
     }
   ]
 }

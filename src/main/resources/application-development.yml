@@ -8,3 +8,7 @@ spring:
     url: jdbc:mysql://localhost:3306/hazelcast
     username: hc_admin
     password: password
+
+hazelcast:
+  filestore:
+    directory: /home/rphgoossens/Temp/filestores/
