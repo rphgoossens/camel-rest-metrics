@@ -1,6 +1,7 @@
-package nl.terrax.camel.config;
+package nl.terrax.camel.config.cache;
 
 import com.hazelcast.core.MapStore;
+import org.springframework.context.annotation.Profile;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -9,6 +10,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+@Profile("!test")
 @Component
 public class BeerMapDBStore implements MapStore<String, Integer> {
 

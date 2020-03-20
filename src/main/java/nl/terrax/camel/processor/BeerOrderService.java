@@ -9,6 +9,7 @@ import nl.terrax.camel.model.BeerSummary;
 import org.apache.camel.Exchange;
 import org.apache.camel.Header;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -18,11 +19,16 @@ public class BeerOrderService {
 
     private final MeterRegistry meterRegistry;
     private final HazelcastInstance hazelcastInstance;
+    private final String beerMap;
 
+    // TODO: remove dependency on hazelcast and possibly on the meterRegistry as well
     public BeerOrderService(MeterRegistry meterRegistry,
-                            @Qualifier("hazelcastInstance") HazelcastInstance hazelcastInstance) {
+                            @Qualifier("hazelcastInstance") HazelcastInstance hazelcastInstance,
+                            @Value("${hazelcast.map.beer-cache}") String beerMap
+    ) {
         this.meterRegistry = meterRegistry;
         this.hazelcastInstance = hazelcastInstance;
+        this.beerMap = beerMap;
     }
 
     @SuppressWarnings("unused")
@@ -45,14 +51,13 @@ public class BeerOrderService {
 
     @SuppressWarnings("unused")
     public BeerSummary getBeer(@Header("name") String name) {
-        int totalBeers = (int) hazelcastInstance.getMap("beer-cache").getOrDefault(name, 0);
+        int totalBeers = (int) hazelcastInstance.getMap(beerMap).getOrDefault(name, 0);
 
         return new BeerSummary(name, totalBeers);
     }
 
-    // TODO: move to event
     private void increaseTotalInCache(Beer beer) {
-        final IMap<String, Integer> map = hazelcastInstance.getMap("beer-cache");
+        final IMap<String, Integer> map = hazelcastInstance.getMap(beerMap);
         map.executeOnKey(beer.getName(), new ValueModifier<String>());
     }
 

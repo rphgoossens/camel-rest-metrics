@@ -36,7 +36,6 @@ public class RestApi extends RouteBuilder {
                 .produces(MediaType.APPLICATION_JSON)
                 .bindingMode(RestBindingMode.auto)
                 .type(Beer.class)
-//                .enableCORS(true)
                 .to("direct:post-beer");
 
         from("direct:get-beer")

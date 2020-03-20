@@ -12,3 +12,10 @@ spring:
 hazelcast:
   filestore:
     directory: /home/rphgoossens/Temp/filestores/
+
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          core: TRACE

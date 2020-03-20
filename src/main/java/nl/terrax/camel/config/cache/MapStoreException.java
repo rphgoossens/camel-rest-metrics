@@ -1,4 +1,4 @@
-package nl.terrax.camel.config;
+package nl.terrax.camel.config.cache;
 
 import java.io.IOException;
 

@@ -1,9 +1,10 @@
-package nl.terrax.camel.config;
+package nl.terrax.camel.config.cache;
 
 import com.hazelcast.core.MapStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Profile("!test")
 @Component
 public class BeerMapFileStore implements MapStore<String, Integer> {
 
@@ -24,7 +26,7 @@ public class BeerMapFileStore implements MapStore<String, Integer> {
 
     private final String mapFileStoresDirectory;
 
-    BeerMapFileStore(@Value("${hazelcast.filestore.directory}") String mapFileStoresDirectory) {
+    public BeerMapFileStore(@Value("${hazelcast.filestore.directory}") String mapFileStoresDirectory) {
         this.mapFileStoresDirectory = mapFileStoresDirectory;
     }
 

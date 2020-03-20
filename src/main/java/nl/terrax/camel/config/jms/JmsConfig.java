@@ -1,4 +1,4 @@
-package nl.terrax.camel.config;
+package nl.terrax.camel.config.jms;
 
 import org.apache.activemq.artemis.jms.client.ActiveMQJMSConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
