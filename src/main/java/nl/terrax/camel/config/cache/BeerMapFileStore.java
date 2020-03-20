@@ -31,8 +31,8 @@ public class BeerMapFileStore implements MapStore<String, Integer> {
     }
 
     @Override
-    public synchronized void store(String store, Integer value) {
-        updateFileStore(this.mapFileStoresDirectory + store, value);
+    public synchronized void store(String key, Integer value) {
+        updateFileStore(this.mapFileStoresDirectory + key, value);
     }
 
     @Override
@@ -42,25 +42,42 @@ public class BeerMapFileStore implements MapStore<String, Integer> {
     }
 
     @Override
-    public void delete(String s) {
-        // not implemented
+    public void delete(String key) {
+        if ((Paths.get(this.mapFileStoresDirectory + key).toFile().exists())) {
+            deleteFileStore(this.mapFileStoresDirectory + key);
+        }
     }
 
     @Override
-    public void deleteAll(Collection<String> collection) {
-        // not implemented
+    public void deleteAll(Collection<String> keys) {
+        for (String key : keys) delete(key);
     }
 
     @Override
-    public synchronized Integer load(String store) {
-
-        if (!(Paths.get(this.mapFileStoresDirectory + store).toFile().exists())) {
-            updateFileStore(this.mapFileStoresDirectory + store, 0);
+    public synchronized Integer load(String key) {
+        if (!(Paths.get(this.mapFileStoresDirectory + key).toFile().exists())) {
+            updateFileStore(this.mapFileStoresDirectory + key, 0);
             return 0;
         } else {
-            return getValueFromFileStore(this.mapFileStoresDirectory + store);
+            return getValueFromFileStore(this.mapFileStoresDirectory + key);
         }
+    }
 
+    @Override
+    public Map<String, Integer> loadAll(Collection<String> keys) {
+        final Map<String, Integer> result = new HashMap<>();
+        for (String key : keys) result.put(key, load(key));
+
+        return result;
+    }
+
+    @Override
+    public Iterable<String> loadAllKeys() {
+        try (Stream<Path> stores = Files.list(Paths.get(mapFileStoresDirectory))) {
+            return stores.map(path -> path.getFileName().toString()).collect(Collectors.toList());
+        } catch (IOException e) {
+            throw new MapStoreException(e);
+        }
     }
 
     private Integer getValueFromFileStore(String fileStore) {
@@ -80,18 +97,10 @@ public class BeerMapFileStore implements MapStore<String, Integer> {
         }
     }
 
-    @Override
-    public Map<String, Integer> loadAll(Collection<String> keys) {
-        final Map<String, Integer> result = new HashMap<>();
-        for (String key : keys) result.put(key, load(key));
-
-        return result;
-    }
-
-    @Override
-    public Iterable<String> loadAllKeys() {
-        try (Stream<Path> stores = Files.list(Paths.get(mapFileStoresDirectory))) {
-            return stores.map(path -> path.getFileName().toString()).collect(Collectors.toList());
+    private void deleteFileStore(String fileStore) {
+        LOGGER.debug("Deleting filestore: {}", fileStore);
+        try {
+            Files.delete(Paths.get(fileStore));
         } catch (IOException e) {
             throw new MapStoreException(e);
         }
