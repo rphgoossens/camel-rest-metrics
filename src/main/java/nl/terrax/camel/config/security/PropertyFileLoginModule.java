@@ -1,4 +1,4 @@
-package nl.terrax.camel.config;
+package nl.terrax.camel.config.security;
 
 import org.eclipse.jetty.jaas.spi.AbstractLoginModule;
 import org.eclipse.jetty.jaas.spi.UserInfo;
