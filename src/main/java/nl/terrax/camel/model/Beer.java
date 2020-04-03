@@ -5,6 +5,9 @@ public class Beer {
     private String name;
     private BeerType type;
 
+    public Beer() {
+    }
+
     public Beer(String name, BeerType type) {
         this.name = name;
         this.type = type;

@@ -25,7 +25,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(properties = {"camel.springboot.javaRoutesExcludePattern=nl/terrax/camel/route/largefiles/**"})
+@SpringBootTest(properties = {"camel.springboot.java-routes-exclude-pattern=nl/terrax/camel/route/largefiles/**"})
 @ActiveProfiles("test")
 public class RestApiTest {
 
