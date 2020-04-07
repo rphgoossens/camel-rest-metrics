@@ -46,7 +46,7 @@ public class RestApiTest {
     private String beerMap;
 
     @SuppressWarnings("unused")
-    @EndpointInject(uri = "mock:post-beer")
+    @EndpointInject("mock:post-beer")
     private MockEndpoint mockPostBeer;
 
     private final Beer lager = new Beer("Bavaria", BeerType.LAGER);
