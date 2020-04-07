@@ -15,6 +15,8 @@ import static org.apache.camel.LoggingLevel.INFO;
 @Component
 public class RestApi extends RouteBuilder {
 
+    public static final String BEERSERVICE_GET_ROUTE = "beerservice.get-route";
+    public static final String BEERSERVICE_POST_ROUTE = "beerservice.post-route";
     private final BeerOrderService beerOrderService;
 
     RestApi(BeerOrderService beerOrderService) {
@@ -39,7 +41,7 @@ public class RestApi extends RouteBuilder {
                 .to("direct:post-beer");
 
         from("direct:get-beer")
-                .routeId("get-route")
+                .routeId(BEERSERVICE_GET_ROUTE)
                 .log(INFO, "Beer ${header.name} requested")
                 .bean(beerOrderService, "getBeer")
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(200))
@@ -47,7 +49,7 @@ public class RestApi extends RouteBuilder {
 
 
         from("direct:post-beer")
-                .routeId("post-route")
+                .routeId(BEERSERVICE_POST_ROUTE)
                 .bean(beerOrderService, "postBeer")
                 .log(INFO, "Beer ${body.name} of type ${body.type} posted")
                 .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(201))
